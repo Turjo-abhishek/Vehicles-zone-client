@@ -1,0 +1,17 @@
+[
+    {
+        "title": "Toyota",
+        "img": "https://i.ibb.co/d2Rmb0Q/toyota-logo.jpg",
+        "category_id": "01"
+    },
+    {
+        "title": "Honda",
+        "img": "https://i.ibb.co/564m5cj/HONDA-LOGO.jpg",
+        "category_id": "02"
+    },
+    {
+        "title": "Nissan",
+        "img": "https://i.ibb.co/GWhghNq/nissan-logo.jpg",
+        "category_id": "03"
+    }
+]
