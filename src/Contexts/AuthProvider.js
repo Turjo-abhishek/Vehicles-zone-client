@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
         return updateProfile(auth.currentUser, userInfo);
     }
 
-    const Logout = () => {
+    const LogOut = () => {
         setLoading(true);
         // localStorage.removeItem("accessToken");
         return signOut(auth);
@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
         return () => unsubscribe();
     },[])
 
-  const authinfo = {Login, createUser, user, Logout, updateUser, loading};
+  const authinfo = {Login, createUser, user, LogOut, updateUser, loading};
 
   return (
     <AuthContext.Provider value={authinfo}>{children}</AuthContext.Provider>

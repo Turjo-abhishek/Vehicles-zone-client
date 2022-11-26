@@ -1,16 +1,10 @@
-import React from "react";
-import toast from 'react-hot-toast';
+import React, { useContext } from "react";
+import toast from "react-hot-toast";
+import { AuthContext } from "../../Contexts/AuthProvider";
 
 const BookingModal = ({ product }) => {
-//   const {
-//     name,
-//     image,
-//     resale_price,
-//     original_price,
-//     location,
-//     years_used,
-//     time_posted,
-//   } = product;
+  const { user } = useContext(AuthContext);
+  const { name, resale_price } = product;
   const handleBooking = (event) => {
     event.preventDefault();
 
@@ -44,27 +38,40 @@ const BookingModal = ({ product }) => {
           >
             ✕
           </label>
-          <h3 className="text-lg font-bold mb-10">h</h3>
+          <h3 className="text-lg font-bold mb-10">Please fill up the form</h3>
           <form onSubmit={handleBooking}>
             <input
               type="text"
-            //   value={date}
-              className="input input-bordered w-full mb-3"
-              disabled
-            />
-            {/* <select name="slot" className="select select-bordered w-full mb-3">
-              {slots?.map((slot, index) => (
-                <option key={index} value={slot}>
-                  {slot}
-                </option>
-              ))}
-            </select> */}
-            <input
-              type="text"
-            //   defaultValue={user?.displayName}
+              defaultValue={user?.displayName}
               disabled
               name="name"
               placeholder="Full Name"
+              className="input input-bordered w-full mb-3"
+            />
+            <input
+              type="text"
+              defaultValue={user?.email}
+              disabled
+              name="email"
+              placeholder="Email"
+              className="input input-bordered w-full mb-3"
+            />
+            <input
+              type="text"
+              defaultValue={name}
+              className="input input-bordered w-full mb-3"
+              disabled
+            />
+            <input
+              type="text"
+              defaultValue={`Price: ${resale_price}`}
+              className="input input-bordered w-full mb-3"
+              disabled
+            />
+            <input
+              type="text"
+              name="location"
+              placeholder="Meeting Location"
               className="input input-bordered w-full mb-3"
             />
             <input
@@ -73,14 +80,7 @@ const BookingModal = ({ product }) => {
               placeholder="Phone Number"
               className="input input-bordered w-full mb-3"
             />
-            <input
-              type="text"
-            //   defaultValue={user?.email}
-              disabled
-              name="email"
-              placeholder="Email"
-              className="input input-bordered w-full mb-3"
-            />
+
             <input
               className="btn btn-accent w-full"
               type="submit"

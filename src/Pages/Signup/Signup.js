@@ -6,27 +6,32 @@ import toast from "react-hot-toast";
 import { AuthContext } from "../../Contexts/AuthProvider";
 
 const Signup = () => {
-    const {handleSubmit, formState: { errors }, register} = useForm();
-    const [signUpError, setSignUpError] = useState('');
-  const { createUser, googleLogin, loading, updateUser } = useContext(AuthContext);
-  const handleRegister = data => {
-    setSignUpError('');
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+  } = useForm();
+  const [signUpError, setSignUpError] = useState("");
+  const { createUser, googleLogin, loading, updateUser } =
+    useContext(AuthContext);
+  const handleRegister = (data) => {
+    setSignUpError("");
     createUser(data.email, data.password)
-    .then(result => {
+      .then((result) => {
         const user = result.user;
         console.log(user);
-        toast('User created successfully');
+        toast("User created successfully");
         const userInfo = {
-            displayName: data.name
-        }
+          displayName: data.name,
+        };
         updateUser(userInfo)
-        .then(() => {
-            saveUserToDb(data.name, data.email)
-        })
-        .catch(err => console.error(err));
-    })
-    .catch(error => setSignUpError(error.message))
-}
+          .then(() => {
+            saveUserToDb(data.name, data.email, data.role);
+          })
+          .catch((err) => console.error(err));
+      })
+      .catch((error) => setSignUpError(error.message));
+  };
 
   const handleGoogleLogin = () => {
     googleLogin()
@@ -37,21 +42,20 @@ const Signup = () => {
       .catch((error) => console.error(error));
   };
 
-  
-const saveUserToDb = (name, email) => {
-    const user = {name: name, email: email}
+  const saveUserToDb = (name, email, role) => {
+    const user = { name: name, email: email, role: role };
     fetch("http://localhost:5000/users", {
       method: "POST",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json",
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(user),
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-    })
-  }
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
 
   if (loading) {
     return (
@@ -71,7 +75,10 @@ const saveUserToDb = (name, email) => {
       <div className="hero-content gap-20  flex-col lg:flex-row py-20">
         <div className="card flex-shrink-0 w-full max-w-2xl shadow-2xl bg-base-100">
           <h1 className="text-4xl font-bold text-center pt-5">Sign Up</h1>
-          <form onSubmit={handleSubmit(handleRegister)} className="card-body pb-4">
+          <form
+            onSubmit={handleSubmit(handleRegister)}
+            className="card-body pb-4"
+          >
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Name</span>
@@ -79,12 +86,14 @@ const saveUserToDb = (name, email) => {
               <input
                 type="text"
                 {...register("name", {
-                    required: "Name is required"
-                  })}
+                  required: "Name is required",
+                })}
                 placeholder="Your Name"
                 className="input input-bordered"
               />
-              {errors.name && <p className="text-red-500">{errors?.name.message}</p>}
+              {errors.name && (
+                <p className="text-red-500">{errors?.name.message}</p>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -93,13 +102,15 @@ const saveUserToDb = (name, email) => {
               <input
                 type="email"
                 {...register("email", {
-                    required: "Email is required"
-                  })}
+                  required: "Email is required",
+                })}
                 placeholder="email"
                 className="input input-bordered"
                 required
               />
-              {errors.email && <p className="text-red-500">{errors?.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500">{errors?.email.message}</p>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -108,15 +119,29 @@ const saveUserToDb = (name, email) => {
               <input
                 type="password"
                 {...register("password", {
-                    required: "Password is required",
-                    minLength: {value: 6, message: "Password must be 6 characters or long"}
-                  })}
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be 6 characters or long",
+                  },
+                })}
                 placeholder="password"
                 className="input input-bordered"
                 required
               />
-              {errors.password && <p className="text-red-500">{errors?.password.message}</p>}
+              {errors.password && (
+                <p className="text-red-500">{errors?.password.message}</p>
+              )}
             </div>
+           <div className="form-control"> 
+           <label className="label">
+                <span className="label-text">Choose type</span>
+              </label>
+            <select {...register("role")} className="select select-bordered w-full max-w-xs">
+            <option value="seller">Seller</option>
+              <option selected value="buyer">Buyer</option>
+            </select>
+           </div>
             <div className="form-control mt-6">
               <input
                 className="btn btn-primary"
