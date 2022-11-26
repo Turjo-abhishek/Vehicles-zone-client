@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import BookingModal from '../Modal/BookingModal';
+import { GrLocation } from "react-icons/gr";
 
 const ProductCard = ({product}) => {
-
-    const handleBooking = () => {
-
-    }
     const {name, image, resale_price, original_price, location, years_used, time_posted} = product;
     return (
         <div className="card mx-auto card-compact w-96 bg-base-100 shadow-xl">
@@ -20,16 +17,24 @@ const ProductCard = ({product}) => {
         </figure>
         <div className="card-body">
           <h2 className="card-title font-bold text-2xl">{name}</h2>
+          <div className='flex justify-center items-center gap-2'>
+          <GrLocation></GrLocation>
+          <p className='text-sm'>{location}</p>
+          </div>
           <div>
             <div className="flex justify-between items-center">
               <p className="text-lg font-semibold">
                 <span className=" text-yellow-400">Price:</span> ${resale_price}
               </p>
+              <p className="text-lg font-semibold">
+                <span className=" text-yellow-400">Original Price:</span> ${original_price}
+              </p>
             </div>
+              <p className="text-lg font-semibold">
+                <span className=" text-yellow-400">Years Used:</span> {years_used}
+              </p>
             <div className="card-actions justify-start">
-                <button onClick={handleBooking} className="btn btn-outline btn-primary">
-                  Book Now
-                </button>
+            <label htmlFor="booking-modal" className="btn btn-outline btn-primary text-white">Book Appointment</label>
             </div>
           </div>
         </div>
