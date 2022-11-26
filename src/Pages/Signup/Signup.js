@@ -1,24 +1,32 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
-import { AuthContext } from "../../Contexts/Authprovider/Authprovider";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { AuthContext } from "../../Contexts/AuthProvider";
 
 const Signup = () => {
-  const {loading} = useContext(AuthContext);
-  const { createUser, googleLogin } = useContext(AuthContext);
-  const handleSignup = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    createUser(email, password)
-      .then((result) => {
+    const {handleSubmit, formState: { errors }, register} = useForm();
+    const [signUpError, setSignUpError] = useState('');
+  const { createUser, googleLogin, loading, updateUser } = useContext(AuthContext);
+  const handleRegister = data => {
+    setSignUpError('');
+    createUser(data.email, data.password)
+    .then(result => {
         const user = result.user;
         console.log(user);
-        form.reset();
-      })
-      .catch((error) => console.log(error));
-  };
+        toast('User created successfully');
+        const userInfo = {
+            displayName: data.name
+        }
+        updateUser(userInfo)
+        .then(() => {
+            saveUserToDb(data.name, data.email)
+        })
+        .catch(err => console.error(err));
+    })
+    .catch(error => setSignUpError(error.message))
+}
 
   const handleGoogleLogin = () => {
     googleLogin()
@@ -28,6 +36,22 @@ const Signup = () => {
       })
       .catch((error) => console.error(error));
   };
+
+  
+const saveUserToDb = (name, email) => {
+    const user = {name: name, email: email}
+    fetch("http://localhost:5000/users", {
+      method: "POST",
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+    })
+  }
 
   if (loading) {
     return (
@@ -47,17 +71,20 @@ const Signup = () => {
       <div className="hero-content gap-20  flex-col lg:flex-row py-20">
         <div className="card flex-shrink-0 w-full max-w-2xl shadow-2xl bg-base-100">
           <h1 className="text-4xl font-bold text-center pt-5">Sign Up</h1>
-          <form onSubmit={handleSignup} className="card-body pb-4">
+          <form onSubmit={handleSubmit(handleRegister)} className="card-body pb-4">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Name</span>
               </label>
               <input
                 type="text"
-                name="name"
+                {...register("name", {
+                    required: "Name is required"
+                  })}
                 placeholder="Your Name"
                 className="input input-bordered"
               />
+              {errors.name && <p className="text-red-500">{errors?.name.message}</p>}
             </div>
             <div className="form-control">
               <label className="label">
@@ -65,11 +92,14 @@ const Signup = () => {
               </label>
               <input
                 type="email"
-                name="email"
+                {...register("email", {
+                    required: "Email is required"
+                  })}
                 placeholder="email"
                 className="input input-bordered"
                 required
               />
+              {errors.email && <p className="text-red-500">{errors?.email.message}</p>}
             </div>
             <div className="form-control">
               <label className="label">
@@ -77,11 +107,15 @@ const Signup = () => {
               </label>
               <input
                 type="password"
-                name="password"
+                {...register("password", {
+                    required: "Password is required",
+                    minLength: {value: 6, message: "Password must be 6 characters or long"}
+                  })}
                 placeholder="password"
                 className="input input-bordered"
                 required
               />
+              {errors.password && <p className="text-red-500">{errors?.password.message}</p>}
             </div>
             <div className="form-control mt-6">
               <input
@@ -91,6 +125,7 @@ const Signup = () => {
               />
               <p className="text-center mt-3">or,</p>
             </div>
+            {signUpError && <p className="text-red-500">{signUpError}</p>}
           </form>
           <div className="mx-auto mb-3">
             <button
