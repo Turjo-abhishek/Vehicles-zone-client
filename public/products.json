@@ -1,0 +1,69 @@
+[
+    {
+        "name": "Nissan Terrano XL",
+        "image": "https://i.ibb.co/xCM47qm/nissan2.jpg",
+        "resale_price": "25,000",
+        "original_price": "30,000",
+        "location": "Gaylord, Michigan, USA",
+        "years_used": "3",
+        "time_posted": "5.00",
+        "category_id": "03",
+        "category_name": "Nissan"
+    },
+    {
+        "name": "Nissan Urvan",
+        "image": "https://i.ibb.co/KjWnHxk/nissan3.jpg",
+        "resale_price": "30,000",
+        "original_price": "35,000",
+        "location": "Mancelona Township, Michigan, USA",
+        "years_used": "5",
+        "time_posted": "5.00",
+        "category_id": "03",
+        "category_name": "Nissan"
+    },
+    {
+        "name": "Honda Accord",
+        "image": "https://i.ibb.co/wynMC0h/honda1.jpg",
+        "resale_price": "22,000",
+        "original_price": "30,000",
+        "location": "Johannesburg, Michigan, USA",
+        "years_used": "4",
+        "time_posted": "5.00",
+        "category_id": "02",
+        "category_name": "Honda"
+    },
+    {
+        "name": "Honda CRV",
+        "image": "https://i.ibb.co/9v5Jmc6/honda2.jpg",
+        "resale_price": "32,000",
+        "original_price": "36,000",
+        "location": "Wildwood, Michigan, USA",
+        "years_used": "2",
+        "time_posted": "5.00",
+        "category_id": "02",
+        "category_name": "Honda"
+    },
+    {
+        "name": "Toyota Corolla SX Auto",
+        "image": "https://i.ibb.co/3NrmWq3/toyota1.jpg",
+        "resale_price": "25,990",
+        "original_price": "30,000",
+        "location": "Rosscommon, Michigan, USA",
+        "years_used": "3",
+        "time_posted": "5.00",
+        "category_id": "01",
+        "category_name": "Toyota"
+    },
+    {
+        "name": "Toyota Corolla Ascent Sport",
+        "image": "https://i.ibb.co/fSDzJ2z/toyota2.jpg",
+        "resale_price": "32,900",
+        "original_price": "38,000",
+        "location": "Frederic, Michigan, USA",
+        "years_used": "4",
+        "time_posted": "5.00",
+        "category_id": "01",
+        "category_name": "Toyota"
+    }
+    
+]
