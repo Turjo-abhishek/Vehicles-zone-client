@@ -7,7 +7,9 @@ const Header = () => {
 
   const handleLogOut = () => {
     LogOut()
-      .then(() => {})
+      .then(() => {
+        localStorage.clear();
+      })
       .catch((err) => console.error(err));
   };
   const menuItems = (
