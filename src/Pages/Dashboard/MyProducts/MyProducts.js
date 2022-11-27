@@ -4,7 +4,7 @@ import { AuthContext } from "../../../Contexts/AuthProvider";
 
 const MyProducts = () => {
     const {user} = useContext(AuthContext);
-  const { data: vehicles = [], refetch } = useQuery({
+  const { data: vehicles = []} = useQuery({
     queryKey: ["vehicles"],
     queryFn: async () => {
       try {
