@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../../Contexts/AuthProvider";
 
 const MyProducts = () => {
+    const {user} = useContext(AuthContext);
   const { data: vehicles = [], refetch } = useQuery({
     queryKey: ["vehicles"],
     queryFn: async () => {
       try {
-        const res = await fetch("http://localhost:5000/vehicles");
+        const res = await fetch(`http://localhost:5000/vehicles?email=${user?.email}`);
         const data = res.json();
         return data;
       } catch (error) {}
@@ -24,6 +26,8 @@ const MyProducts = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Specialty</th>
+              <th>Available</th>
+              <th>Sold</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -39,8 +43,8 @@ const MyProducts = () => {
                   </div>
                 </td>
                 <td>{vehicle.name}</td>
-                <td>{vehicle.email}</td>
-                <td>{vehicle.specialty}</td>
+                <td>{vehicle.original_price}</td>
+                <td>{vehicle.resale_price}</td>
                 <td>
                   <label
                     htmlFor="confirmation-modal"
