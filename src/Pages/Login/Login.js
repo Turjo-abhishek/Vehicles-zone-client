@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
+import useToken from "../../Hooks/useToken";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -10,13 +11,13 @@ const Login = () => {
     const { Login, googleLogin } = useContext(AuthContext);
     const [loginError, setLoginError] = useState("");
     const [loginUser, setLoginUser] = useState('');
-    // const [token] = useToken(loginUser);
+    const [token] = useToken(loginUser);
   
     const from = location?.state?.from?.pathname || "/";
   
-    // if(token){
-    //   navigate(from, {replace: true});
-    // }
+    if(token){
+      navigate(from, {replace: true});
+    }
 
     const {
         register,

@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { AuthContext } from "../../Contexts/AuthProvider";
+import useToken from "../../Hooks/useToken";
 
 const Signup = () => {
   const {
@@ -14,7 +15,15 @@ const Signup = () => {
   const [signUpError, setSignUpError] = useState("");
   const { createUser, googleLogin, loading, updateUser } =
     useContext(AuthContext);
-  const handleRegister = (data) => {
+    const [newUserEmail, setNewUserEmail] = useState('');
+    const [token] = useToken(newUserEmail);
+    const navigate = useNavigate();
+  
+    if(token){
+      navigate("/");
+    }
+  
+    const handleRegister = (data) => {
     setSignUpError("");
     createUser(data.email, data.password)
       .then((result) => {
@@ -54,6 +63,7 @@ const Signup = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        setNewUserEmail(email);
       });
   };
 
