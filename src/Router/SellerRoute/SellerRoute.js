@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
+import useSeller from "../../Hooks/useSeller";
 
-const PrivateRoute = ({ children }) => {
+const SellerRoute = ({ children }) => {
   const location = useLocation();
   const { user, loading } = useContext(AuthContext);
-  if (loading) {
+  const [isSeller, isSellerLoading] = useSeller(user?.email);
+  if (loading || isSellerLoading) {
     return (
       <div className="flex justify-center items-center">
         <div
@@ -17,10 +19,10 @@ const PrivateRoute = ({ children }) => {
       </div>
     );
   }
-  if (user) {
+  if (user && isSeller) {
     return children;
   }
   return <Navigate to="/login" state={{ from: location }} replace></Navigate>;
 };
 
-export default PrivateRoute;
+export default SellerRoute;

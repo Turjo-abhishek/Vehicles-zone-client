@@ -1,46 +1,82 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import BookingModal from '../Modal/BookingModal';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import BookingModal from "../Modal/BookingModal";
 import { GrLocation } from "react-icons/gr";
 
-const ProductCard = ({product}) => {
-    const {name, image, resale_price, original_price, location, years_used, time_posted} = product;
-    return (
-        <div className="card mx-auto card-compact w-96 bg-base-100 shadow-xl">
-        <figure>
-            <img
-              src={image}
-              className="rounded-lg"
-              style={{ height: "250px" }}
-              alt=""
-            />
-        </figure>
-        <div className="card-body">
+const ProductCard = ({ product }) => {
+  const {
+    name,
+    image,
+    resale_price,
+    original_price,
+    location,
+    years_used,
+    condition,
+    year_of_purchase,
+    time_posted,
+    seller_name,
+    mobile,
+  } = product;
+  return (
+    <div className="card mx-auto card-compact w-96 bg-base-100 shadow-xl">
+      <figure>
+        <img
+          src={image}
+          className="rounded-lg"
+          style={{ height: "250px" }}
+          alt=""
+        />
+      </figure>
+      <div className="card-body">
+        <div className="flex justify-between items-center">
           <h2 className="card-title font-bold text-2xl">{name}</h2>
-          <div className='flex justify-center items-center gap-2'>
-          <GrLocation></GrLocation>
-          <p className='text-sm'>{location}</p>
-          </div>
+          <p className="text-end font-semibold text-xs">{condition}</p>
+        </div>
+        <div className="flex justify-between items-center gap-2 mb-3">
           <div>
-            <div className="flex justify-between items-center">
-              <p className="text-lg font-semibold">
-                <span className=" text-yellow-400">Price:</span> ${resale_price}
-              </p>
-              <p className="text-lg font-semibold">
-                <span className=" text-yellow-400">Original Price:</span> ${original_price}
-              </p>
+            <GrLocation></GrLocation>
+            <p className="text-sm">{location}</p>
+          </div>
+          <p className="text-end">Total Used: {years_used} years</p>
+        </div>
+        <div>
+          <div className="flex justify-between items-center">
+            <p className="text-sm font-semibold">
+              <span className=" text-yellow-400">Resale Price:</span> $
+              {resale_price}
+            </p>
+            <p className="text-sm font-semibold text-end">
+              <span className=" text-yellow-400">Original Price:</span> $
+              {original_price}
+            </p>
+          </div>
+          <div className="flex justify-between mt-3">
+            <div className="flex flex-col justify-center items-center">
+              <p className="text-end text-xs font-bold">Seller:</p>
+              <p>{seller_name}</p>
             </div>
-              <p className="text-lg font-semibold">
-                <span className=" text-yellow-400">Years Used:</span> {years_used}
-              </p>
-            <div className="card-actions justify-start">
-            <label htmlFor="booking-modal" className="btn btn-outline btn-primary text-white">Book Appointment</label>
+            <div className="flex flex-col justify-center items-center">
+              <p className="text-end text-xs font-bold">Phone:</p>
+              <p>{mobile}</p>
             </div>
+            <div className="flex flex-col justify-center items-center">
+              <p className="text-end text-xs font-bold">Purchased at:</p>
+              <p>{year_of_purchase}</p>
+            </div>
+          </div>
+          <div className="card-actions justify-start mt-5">
+            <label
+              htmlFor="booking-modal"
+              className="btn btn-outline btn-primary text-white"
+            >
+              Book Appointment
+            </label>
           </div>
         </div>
-        <BookingModal product={product}></BookingModal>
       </div>
-    );
+      <BookingModal product={product}></BookingModal>
+    </div>
+  );
 };
 
 export default ProductCard;
