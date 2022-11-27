@@ -1,14 +1,69 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../../../Contexts/AuthProvider";
 
 const AddProduct = () => {
+  const { user } = useContext(AuthContext);
   const {
     handleSubmit,
     formState: { errors },
     register,
   } = useForm();
+  const imgHostKey = process.env.REACT_APP_imgbb_secret_key;
 
-  const handleAddProduct = (data) => {};
+  const handleAddProduct = (data) => {
+    const formdata = new FormData();
+
+    const mobile = data.mobile;
+    const location = data.location;
+    const name = data.name;
+    const resale_price = data.resale_price;
+    const original_price = data.original_price;
+    const year_of_purchase = data.year_of_purchase;
+    const years_used = data.years_used;
+    const condition = data.condition;
+    const category_id = data.category_name;
+    const description = data.description;
+
+    
+    formdata.append("image", data.image[0]);
+    const url = `https://api.imgbb.com/1/upload?key=${imgHostKey}`;
+    fetch(url, {
+      method: "POST",
+      body: formdata,
+    })
+      .then((res) => res.json())
+      .then((imgdata) => {
+        if (imgdata.success) {
+            const newProductInfo = {
+                seller_email: user?.email,
+                mobile,
+                location,
+                name,
+                resale_price,
+                original_price,
+                year_of_purchase,
+                years_used,
+                condition,
+                category_id,
+                description,
+                image:imgdata.data.url
+              };
+
+
+          fetch("http://localhost:5000/products", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(newProductInfo),
+          })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.error(err));
+        }
+      });
+  };
 
   return (
     <div className="w-full lg:w-2/3 mx-auto">
@@ -19,39 +74,6 @@ const AddProduct = () => {
             onSubmit={handleSubmit(handleAddProduct)}
             className="card-body pb-4"
           >
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Seller Name</span>
-              </label>
-              <input
-                type="text"
-                {...register("seller_name", {
-                  required: "Name is required",
-                })}
-                placeholder="Seller Name"
-                className="input input-bordered"
-              />
-              {errors.seller_name && (
-                <p className="text-red-500">{errors?.seller_name.message}</p>
-              )}
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Seller Email</span>
-              </label>
-              <input
-                type="email"
-                {...register("seller_email", {
-                  required: "Email is required",
-                })}
-                placeholder="Seller Email"
-                className="input input-bordered"
-                required
-              />
-              {errors.seller_email && (
-                <p className="text-red-500">{errors?.seller_email.message}</p>
-              )}
-            </div>
             <div className="flex justify-between">
               <div className="form-control">
                 <label className="label">
@@ -79,7 +101,7 @@ const AddProduct = () => {
                   {...register("location", {
                     required: "location is required",
                   })}
-                  placeholder="Seller Location"
+                  placeholder="Chittagong, Dhaka, etc"
                   className="input input-bordered"
                   required
                 />
@@ -177,9 +199,7 @@ const AddProduct = () => {
                   required
                 />
                 {errors.years_used && (
-                  <p className="text-red-500">
-                    {errors?.years_used.message}
-                  </p>
+                  <p className="text-red-500">{errors?.years_used.message}</p>
                 )}
               </div>
             </div>
@@ -192,12 +212,8 @@ const AddProduct = () => {
                 className="select select-bordered w-full"
               >
                 <option value="Excellent">Excellent</option>
-                <option value="Very Good">
-                    Very Good
-                </option>
-                <option value="Good">
-                    Good
-                </option>
+                <option value="Very Good">Very Good</option>
+                <option value="Good">Good</option>
               </select>
             </div>
             <div className="form-control">
@@ -208,14 +224,30 @@ const AddProduct = () => {
                 {...register("category_name")}
                 className="select select-bordered w-full"
               >
-                <option value="Toyota">Toyota</option>
-                <option value="Nissan">
-                  Nissan
-                </option>
-                <option value="Toyota">
-                  Toyota
-                </option>
+                <option value="01">Toyota</option>
+                <option value="03">Nissan</option>
+                <option value="02">Honda</option>
               </select>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Description</span>
+              </label>
+              <textarea
+                {...register("description")}
+                className="textarea textarea-primary"
+                placeholder="Describe Your product"
+              ></textarea>
+            </div>
+            <div className="form-control w-full mt-2">
+              <label className="label">
+                <span className="label-text">Photo</span>
+              </label>
+              <input
+                {...register("image")}
+                type="file"
+                className="file-input file-input-bordered w-full max-w-xs"
+              />
             </div>
             <div className="form-control mt-6">
               <input className="btn btn-primary" type="submit" value="Submit" />
