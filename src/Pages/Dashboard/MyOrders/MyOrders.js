@@ -1,0 +1,57 @@
+import { useQuery } from '@tanstack/react-query';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../Contexts/AuthProvider';
+
+const MyOrders = () => {
+    const {user} = useContext(AuthContext);
+  const { data: orders = []} = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/orders?email=${user?.email}`);
+        const data = res.json();
+        return data;
+      } catch (error) {}
+    },
+  });
+    return (
+        <div className="ml-7">
+      <h2 className="text-2xl font-semibold mb-7 text-center">My Orders</h2>
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Avatar</th>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order, i) => (
+              <tr key={order._id}>
+                <th>{i + 1}</th>
+                <td>
+                  <div className="avatar">
+                    <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                      <img src={order.product_image} alt="" />
+                    </div>
+                  </div>
+                </td>
+                <td>{order.product_name}</td>
+                <td>{order.price}</td>
+                <td>
+                  <Link to={`/dashboard/payment/${order._id}`} className="btn btn-sm btn-primary">Pay</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    );
+};
+
+export default MyOrders;

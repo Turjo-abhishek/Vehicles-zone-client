@@ -4,12 +4,15 @@ import Main from "../../Layout/Main";
 import AddProduct from "../../Pages/Dashboard/AddProduct/AddProduct";
 import Allbuyers from "../../Pages/Dashboard/Allbuyers/Allbuyers";
 import Allsellers from "../../Pages/Dashboard/Allsellers/Allsellers";
+import MyOrders from "../../Pages/Dashboard/MyOrders/MyOrders";
 import MyProducts from "../../Pages/Dashboard/MyProducts/MyProducts";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
+import PaymentPage from "../../Pages/Payment/PaymentPage/PaymentPage";
 import ProductsByCategory from "../../Pages/ProductsByCategory/ProductsByCategory";
 import Signup from "../../Pages/Signup/Signup";
 import AdminRoute from "../AdminRoute/AdminRoute";
+import BuyerRoute from "../BuyerRoute/BuyerRoute";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import SellerRoute from "../SellerRoute/SellerRoute";
 
@@ -60,6 +63,14 @@ const Routes = createBrowserRouter([
             {
                 path: "/dashboard/allbuyers",
                 element: <AdminRoute><Allbuyers></Allbuyers></AdminRoute>
+            },
+            {
+                path: "/dashboard/myorders",
+                element: <BuyerRoute><MyOrders></MyOrders></BuyerRoute>
+            },
+            {
+                path: "/dashboard/payment/:id",
+                element: <BuyerRoute><PaymentPage></PaymentPage></BuyerRoute>
             }
         ]
     }

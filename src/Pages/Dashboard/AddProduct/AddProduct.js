@@ -39,6 +39,7 @@ const AddProduct = () => {
       .then((imgdata) => {
         if (imgdata.success) {
             const newProductInfo = {
+                seller_name: user?.displayName,
                 seller_email: user?.email,
                 mobile,
                 location,

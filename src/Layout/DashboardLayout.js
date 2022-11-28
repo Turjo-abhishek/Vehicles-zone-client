@@ -2,13 +2,15 @@ import React, { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { AuthContext } from "../Contexts/AuthProvider";
 import useAdmin from "../Hooks/useAdmin";
+import useBuyer from "../Hooks/useBuyer";
 import useSeller from "../Hooks/useSeller";
 import Footer from "../Pages/Shared/Footer/Footer";
 import Header from "../Pages/Shared/Header/Header";
 
 const DashboardLayout = () => {
   const { user } = useContext(AuthContext);
-  const [ isSeller ] = useSeller(user?.email);
+  const [isSeller] = useSeller(user?.email);
+  const [isBuyer] = useBuyer(user?.email);
   const [isAdmin] = useAdmin(user?.email);
   return (
     <div>
@@ -28,24 +30,38 @@ const DashboardLayout = () => {
             {isSeller && (
               <>
                 <li>
-                  <Link className="font-semibold" to="/dashboard/addproduct">Add a Product</Link>
+                  <Link className="font-semibold" to="/dashboard/addproduct">
+                    Add a Product
+                  </Link>
                 </li>
                 <li>
-                  <Link className="font-semibold" to="/dashboard/myproducts">My Products</Link>
+                  <Link className="font-semibold" to="/dashboard/myproducts">
+                    My Products
+                  </Link>
                 </li>
               </>
             )}
-            {
-              isAdmin && 
+            {isAdmin && (
               <>
                 <li>
-                  <Link className="font-semibold" to="/dashboard/allsellers">All Sellers</Link>
+                  <Link className="font-semibold" to="/dashboard/allsellers">
+                    All Sellers
+                  </Link>
                 </li>
                 <li>
-                  <Link className="font-semibold" to="/dashboard/allbuyers">All Buyers</Link>
+                  <Link className="font-semibold" to="/dashboard/allbuyers">
+                    All Buyers
+                  </Link>
                 </li>
               </>
-            }
+            )}
+            {isBuyer && (
+              <li>
+                <Link className="font-semibold" to="/dashboard/myorders">
+                  My Orders
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

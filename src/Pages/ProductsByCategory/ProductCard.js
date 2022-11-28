@@ -4,6 +4,9 @@ import BookingModal from "../Modal/BookingModal";
 import { GrLocation } from "react-icons/gr";
 
 const ProductCard = ({ product }) => {
+  const [productInfo, setProductInfo] = useState(null);
+  console.log(productInfo);
+
   const {
     name,
     image,
@@ -66,15 +69,16 @@ const ProductCard = ({ product }) => {
           </div>
           <div className="card-actions justify-start mt-5">
             <label
+              onClick={() => setProductInfo(product)}
               htmlFor="booking-modal"
               className="btn btn-outline btn-primary text-white"
             >
-              Book Appointment
+              Book Now
             </label>
           </div>
         </div>
       </div>
-      <BookingModal product={product}></BookingModal>
+      {productInfo && <BookingModal setProductInfo={setProductInfo} productInfo={productInfo}></BookingModal>}
     </div>
   );
 };

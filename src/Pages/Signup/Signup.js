@@ -149,7 +149,7 @@ const Signup = () => {
               </label>
             <select {...register("role")} className="select select-bordered w-full max-w-xs">
             <option value="seller">Seller</option>
-              <option selected value="buyer">Buyer</option>
+              <option value="buyer">Buyer</option>
             </select>
            </div>
             <div className="form-control mt-6">

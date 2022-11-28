@@ -2,13 +2,28 @@ import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import { AuthContext } from "../../Contexts/AuthProvider";
 
-const BookingModal = ({ product }) => {
+const BookingModal = ({ productInfo, setProductInfo }) => {
+  console.log(productInfo);
   const { user } = useContext(AuthContext);
-  const { name, resale_price } = product;
+  const { name, resale_price, _id, image} = productInfo;
+
   const handleBooking = (event) => {
     event.preventDefault();
+    const form = event.target;
+    const location = form.location.value;
+    const phone = form.phone.value;
+    
 
-    const booking = {};
+    const booking = {
+      buyer_name: user?.displayName,
+      buyer_email: user?.email,
+      price: resale_price,
+      location,
+      phone,
+      product_id: _id,
+      product_image: image,
+      product_name: name
+    };
 
     fetch("http://localhost:5000/bookings", {
       method: "POST",
@@ -21,6 +36,7 @@ const BookingModal = ({ product }) => {
       .then((data) => {
         if (data.acknowledged) {
           toast.success("booking confirmed.");
+          setProductInfo(null);
         } else {
           toast.error(data.message);
         }
@@ -73,16 +89,23 @@ const BookingModal = ({ product }) => {
               name="location"
               placeholder="Meeting Location"
               className="input input-bordered w-full mb-3"
+              required
             />
             <input
               type="text"
               name="phone"
               placeholder="Phone Number"
               className="input input-bordered w-full mb-3"
+              required
             />
-
+            {/* 
             <input
-              className="btn btn-accent w-full"
+              className="btn btn-accent w-full "
+              type="submit"
+              value="Submit"
+            /> */}
+            <input
+              className="btn btn-accent w-full "
               type="submit"
               value="Submit"
             />
