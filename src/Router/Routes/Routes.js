@@ -70,7 +70,8 @@ const Routes = createBrowserRouter([
             },
             {
                 path: "/dashboard/payment/:id",
-                element: <BuyerRoute><PaymentPage></PaymentPage></BuyerRoute>
+                element: <BuyerRoute><PaymentPage></PaymentPage></BuyerRoute>,
+                loader: ({params}) => fetch(`http://localhost:5000/orders/${params.id}`)
             }
         ]
     }

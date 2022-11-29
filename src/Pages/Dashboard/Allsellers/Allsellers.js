@@ -13,7 +13,7 @@ const Allsellers = () => {
     },
   });
 
-  const handleDeleteBuyer = (seller) => {
+  const handleDeleteSeller = (seller) => {
     fetch(`http://localhost:5000/allsellers/${seller._id}`,{
     method: 'DELETE'
     // headers: {
@@ -50,7 +50,7 @@ const Allsellers = () => {
                 <td>{seller.name}</td>
                 <td>{seller.email}</td>
                 <td>{seller.role}</td>
-                <td><button onClick={() => handleDeleteBuyer(seller)} className="btn btn-sm btn-error">Delete</button></td>
+                <td><button onClick={() => handleDeleteSeller(seller)} className="btn btn-sm btn-error">Delete</button></td>
               </tr>
             ))}
           </tbody>

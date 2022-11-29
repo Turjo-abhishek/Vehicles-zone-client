@@ -51,7 +51,8 @@ const AddProduct = () => {
                 condition,
                 category_id,
                 description,
-                image:imgdata.data.url
+                image:imgdata.data.url,
+                status: "available"
               };
 
 
@@ -201,7 +202,7 @@ const AddProduct = () => {
                   {...register("years_used", {
                     required: "Years Used is required",
                   })}
-                  placeholder="Totally used yeards"
+                  placeholder="provide year in number"
                   className="input input-bordered"
                   required
                 />
