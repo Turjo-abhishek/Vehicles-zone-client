@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import BookingModal from "../Modal/BookingModal";
 import { GrLocation } from "react-icons/gr";
+import { FaDollarSign } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
   const [productInfo, setProductInfo] = useState(null);
@@ -32,7 +32,7 @@ const ProductCard = ({ product }) => {
       </figure>
       <div className="card-body">
         <div className="flex justify-between items-center">
-          <h2 className="card-title font-bold text-2xl">{name}</h2>
+          <h2 className="card-title font-bold text-xl w-2/3">{name}</h2>
           <p className="text-end font-semibold text-xs">{condition}</p>
         </div>
         <div className="flex justify-between items-center gap-2 mb-3">
@@ -40,33 +40,30 @@ const ProductCard = ({ product }) => {
             <GrLocation></GrLocation>
             <p className="text-sm">{location}</p>
           </div>
-          <p className="text-end">Total Used: {years_used} years</p>
+          <p className="text-end">Used: {years_used} years</p>
         </div>
         <div>
           <div className="flex justify-between items-center">
-            <p className="text-sm font-semibold">
-              <span className=" text-yellow-400">Resale Price:</span> $
-              {resale_price}
-            </p>
-            <p className="text-sm font-semibold text-end">
-              <span className=" text-yellow-400">Original Price:</span> $
-              {original_price}
-            </p>
+            <div className="flex items-center">
+              <FaDollarSign></FaDollarSign>
+              <p className="text-sm font-semibold">{resale_price}</p>
+            </div>
+            <div className="flex items-center">
+              <div className="flex items-center">
+                <span className="text-sm font-semibold">Original</span>
+                <FaDollarSign></FaDollarSign>
+              </div>
+              <p className="text-sm font-semibold">{original_price}</p>
+            </div>
           </div>
           <div className="flex justify-between mt-3">
-            <div className="flex flex-col justify-center items-center">
-              <p className="text-end text-xs font-bold">Seller:</p>
-              <p>{seller_name}</p>
-            </div>
-            <div className="flex flex-col justify-center items-center">
-              <p className="text-end text-xs font-bold">Phone:</p>
-              <p>{mobile}</p>
-            </div>
+            <p className=" text-xs font-bold">Seller: {seller_name}</p>
             <div className="flex flex-col justify-center items-center">
               <p className="text-end text-xs font-bold">Purchased at:</p>
               <p>{year_of_purchase}</p>
             </div>
           </div>
+          <p className=" text-xs font-bold">Phone: {mobile}</p>
           <div className="card-actions justify-start mt-5">
             <label
               onClick={() => setProductInfo(product)}
@@ -78,7 +75,12 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
       </div>
-      {productInfo && <BookingModal setProductInfo={setProductInfo} productInfo={productInfo}></BookingModal>}
+      {productInfo && (
+        <BookingModal
+          setProductInfo={setProductInfo}
+          productInfo={productInfo}
+        ></BookingModal>
+      )}
     </div>
   );
 };

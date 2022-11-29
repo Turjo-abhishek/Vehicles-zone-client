@@ -4,12 +4,14 @@ import toast from "react-hot-toast";
 import { AuthContext } from "../../../Contexts/AuthProvider";
 
 const MyProducts = () => {
-    const {user} = useContext(AuthContext);
-  const { data: vehicles = [], refetch} = useQuery({
+  const { user } = useContext(AuthContext);
+  const { data: vehicles = [], refetch } = useQuery({
     queryKey: ["vehicles"],
     queryFn: async () => {
       try {
-        const res = await fetch(`http://localhost:5000/vehicles?email=${user?.email}`);
+        const res = await fetch(
+          `http://localhost:5000/vehicles?email=${user?.email}`
+        );
         const data = res.json();
         return data;
       } catch (error) {}
@@ -17,36 +19,49 @@ const MyProducts = () => {
   });
 
   const handleDeleteVehicle = (vehicle) => {
-    fetch(`http://localhost:5000/vehicles/${vehicle._id}`,{
-    method: 'DELETE'
-    // headers: {
-    //     authorization: `bearer ${localStorage.getItem("accessToken")}`
-    // }
+    fetch(`http://localhost:5000/vehicles/${vehicle?._id}`, {
+      method: "DELETE",
+      // headers: {
+      //     authorization: `bearer ${localStorage.getItem("accessToken")}`
+      // }
     })
-    .then(res => res.json())
-    .then(data => {
-        if(data.deletedCount > 0){
-            refetch();
-            toast.success(`${vehicle.name} deleted successfully`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.deletedCount > 0) {
+          refetch();
+          toast.success(`${vehicle?.name} deleted successfully`);
         }
-    });
-  }
+      });
+  };
 
   const handleAdvertise = (vehicle) => {
-    fetch(`http://localhost:5000/vehicles?vehicleId=${vehicle._id}`, {
-            method: "PATCH",
-            body: JSON.stringify({
-              advertised: true,
-            }),
+    fetch(`http://localhost:5000/vehicles?vehicleId=${vehicle?._id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        advertised: true,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.modifiedCount) {
+          fetch("http://localhost:5000/advertises", {
+            method: "POST",
             headers: {
-              "Content-type": "application/json",
+              "content-type": "application/json",
             },
+            body: JSON.stringify(vehicle),
           })
-            .then((response) => response.json())
-            .then(data => console.log(data));
-  }
-
-
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+            });
+          refetch();
+        }
+      });
+  };
 
   return (
     <div className="ml-7">
@@ -78,18 +93,30 @@ const MyProducts = () => {
                 <td>{vehicle.name}</td>
                 <td>{vehicle.resale_price}</td>
                 <td>{vehicle.status}</td>
-                <td><button onClick={() =>handleDeleteVehicle(vehicle)} className="btn btn-error btn-sm rounded-full">delete</button></td>
                 <td>
-                  {
-                    !vehicle.advertised && 
-                    <button onClick={() =>handleAdvertise(vehicle)} className="btn btn-sm btn-primary rounded-full"> Advertise
+                  <button
+                    onClick={() => handleDeleteVehicle(vehicle)}
+                    className="btn btn-error btn-sm rounded-full"
+                  >
+                    delete
                   </button>
-                  }
-                  {
-                    vehicle.advertised && 
-                    <button className="btn btn-sm btn-success rounded-full"> Advertised
-                  </button>
-                  }
+                </td>
+                <td>
+                  {!vehicle.advertised && (
+                    <button
+                      onClick={() => handleAdvertise(vehicle)}
+                      className="btn btn-sm btn-primary rounded-full"
+                    >
+                      {" "}
+                      Advertise
+                    </button>
+                  )}
+                  {vehicle.advertised && (
+                    <button className="btn btn-sm btn-success rounded-full">
+                      {" "}
+                      Advertised
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -34,11 +34,11 @@ const BookingModal = ({ productInfo, setProductInfo }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.acknowledged) {
+        if (data?.acknowledged) {
           toast.success("booking confirmed.");
           setProductInfo(null);
         } else {
-          toast.error(data.message);
+          toast.error(data?.message);
         }
       });
   };
