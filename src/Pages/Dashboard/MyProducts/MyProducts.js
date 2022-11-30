@@ -28,6 +28,14 @@ const MyProducts = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data?.deletedCount > 0) {
+          fetch(`http://localhost:5000/advertises/${vehicle?._id}`, {
+            method: "DELETE",
+            // headers: {
+            //     authorization: `bearer ${localStorage.getItem("accessToken")}`
+            // }
+          })
+            .then((res) => res.json())
+            .then((data) => {});
           refetch();
           toast.success(`${vehicle?.name} deleted successfully`);
         }
@@ -47,12 +55,22 @@ const MyProducts = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data?.modifiedCount) {
+          const vehicleInfo = {
+            vehicle_id: vehicle._id,
+            vehicle_name: vehicle.name,
+            vehicle_image: vehicle.image,
+            vehicle_status: vehicle.status,
+            vehicle_condition: vehicle.condition,
+            vehicle_location: vehicle.location,
+            vehicle_description: vehicle.description,
+            vehicle_price: vehicle.resale_price,
+          };
           fetch("http://localhost:5000/advertises", {
             method: "POST",
             headers: {
               "content-type": "application/json",
             },
-            body: JSON.stringify(vehicle),
+            body: JSON.stringify(vehicleInfo),
           })
             .then((res) => res.json())
             .then((data) => {

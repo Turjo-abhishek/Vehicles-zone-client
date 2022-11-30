@@ -15,15 +15,15 @@ const Signup = () => {
   const [signUpError, setSignUpError] = useState("");
   const { createUser, googleLogin, loading, updateUser } =
     useContext(AuthContext);
-    const [newUserEmail, setNewUserEmail] = useState('');
-    const [token] = useToken(newUserEmail);
-    const navigate = useNavigate();
-  
-    if(token){
-      navigate("/");
-    }
-  
-    const handleRegister = (data) => {
+  const [newUserEmail, setNewUserEmail] = useState("");
+  const [token] = useToken(newUserEmail);
+  const navigate = useNavigate();
+
+  if (token) {
+    navigate("/");
+  }
+
+  const handleRegister = (data) => {
     setSignUpError("");
     createUser(data.email, data.password)
       .then((result) => {
@@ -46,7 +46,24 @@ const Signup = () => {
     googleLogin()
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        const socialUserInfo = {
+          name: user.displayName,
+          email: user.email,
+          role: "buyer",
+        };
+        fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(socialUserInfo),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if(data.acknowledged){
+              setNewUserEmail(user.email);
+            }
+          });
       })
       .catch((error) => console.error(error));
   };
@@ -143,15 +160,18 @@ const Signup = () => {
                 <p className="text-red-500">{errors?.password.message}</p>
               )}
             </div>
-           <div className="form-control"> 
-           <label className="label">
+            <div className="form-control">
+              <label className="label">
                 <span className="label-text">Choose type</span>
               </label>
-            <select {...register("role")} className="select select-bordered w-full max-w-xs">
-            <option value="seller">Seller</option>
-              <option value="buyer">Buyer</option>
-            </select>
-           </div>
+              <select
+                {...register("role")}
+                className="select select-bordered w-full max-w-xs"
+              >
+                <option value="seller">Seller</option>
+                <option value="buyer">Buyer</option>
+              </select>
+            </div>
             <div className="form-control mt-6">
               <input
                 className="btn btn-primary"

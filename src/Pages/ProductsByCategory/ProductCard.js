@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import BookingModal from "../Modal/BookingModal";
 import { GrLocation } from "react-icons/gr";
 import { FaDollarSign } from "react-icons/fa";
+import { TiTick } from "react-icons/ti";
 
 const ProductCard = ({ product }) => {
   const [productInfo, setProductInfo] = useState(null);
-  console.log(productInfo);
+
+  // useEffect( () => {
+  //   fetch(`http://localhost:5000/sellers/verified/${product?.seller_email}`)
+  //   .then(res => res.json())
+  //   .then(data => console.log(data));
+  // },[product?.seller_email])
 
   const {
     name,
@@ -19,6 +25,7 @@ const ProductCard = ({ product }) => {
     time_posted,
     seller_name,
     mobile,
+    verified
   } = product;
   return (
     <div className="card mx-auto card-compact w-96 bg-base-100 shadow-xl">
@@ -56,14 +63,25 @@ const ProductCard = ({ product }) => {
               <p className="text-sm font-semibold">{original_price}</p>
             </div>
           </div>
-          <div className="flex justify-between mt-3">
+          <div className="flex justify-between mt-3 mb-2">
+            <div className="flex items-center gap-2">
             <p className=" text-xs font-bold">Seller: {seller_name}</p>
-            <div className="flex flex-col justify-center items-center">
+            {
+              verified? 
+              <TiTick className="text-blue-600 text-2xl"></TiTick>
+              :
+              ""
+            }
+            </div>
+            <div className="flex gap-2 items-center">
               <p className="text-end text-xs font-bold">Purchased at:</p>
-              <p>{year_of_purchase}</p>
+              <p className="text-end text-xs">{year_of_purchase}</p>
             </div>
           </div>
+          <div className="flex items center">
           <p className=" text-xs font-bold">Phone: {mobile}</p>
+          <p className=" text-xs font-bold text-end">Posted: {time_posted}</p>
+          </div>
           <div className="card-actions justify-start mt-5">
             <label
               onClick={() => setProductInfo(product)}

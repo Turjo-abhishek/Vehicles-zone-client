@@ -14,20 +14,45 @@ const Allsellers = () => {
   });
 
   const handleDeleteSeller = (seller) => {
-    fetch(`http://localhost:5000/allsellers/${seller._id}`,{
-    method: 'DELETE'
-    // headers: {
-    //     authorization: `bearer ${localStorage.getItem("accessToken")}`
-    // }
+    fetch(`http://localhost:5000/allsellers/${seller?._id}`, {
+      method: "DELETE",
+      // headers: {
+      //     authorization: `bearer ${localStorage.getItem("accessToken")}`
+      // }
     })
-    .then(res => res.json())
-    .then(data => {
-        if(data.deletedCount > 0){
-            refetch();
-            toast.success(`${seller.name} deleted successfully`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.deletedCount > 0) {
+          refetch();
+          toast.success(`${seller?.name} deleted successfully`);
         }
-    });
-  }
+      });
+  };
+
+  const handleverifySeller = (seller) => {
+    fetch(`http://localhost:5000/allsellers/${seller?._id}`, {
+      method: "PUT",
+      // headers: {
+      //     authorization: `bearer ${localStorage.getItem("accessToken")}`
+      // }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if(data?.modifiedCount> 0){
+          fetch(`http://localhost:5000/seller/verify/${seller?.email}`, {
+            method: "PUT",
+            // headers: {
+            //     authorization: `bearer ${localStorage.getItem("accessToken")}`
+            // }
+          })
+          .then(res => res.json())
+          .then(data => console.log(data))
+          toast.success("Seller Verified");
+          refetch();
+        }
+        
+      });
+  };
 
   return (
     <div className="ml-7">
@@ -41,6 +66,7 @@ const Allsellers = () => {
               <th>Email</th>
               <th>Role</th>
               <th>Action</th>
+              <th>Verify Seller</th>
             </tr>
           </thead>
           <tbody>
@@ -50,7 +76,22 @@ const Allsellers = () => {
                 <td>{seller.name}</td>
                 <td>{seller.email}</td>
                 <td>{seller.role}</td>
-                <td><button onClick={() => handleDeleteSeller(seller)} className="btn btn-sm btn-error">Delete</button></td>
+                <td>
+                  <button
+                    onClick={() => handleDeleteSeller(seller)}
+                    className="btn btn-sm btn-error"
+                  >
+                    Delete
+                  </button>
+                </td>
+                <td>
+                  {
+                    seller?.verified ? 
+                    <button className="btn btn-sm btn-success">Verified</button>
+                    :
+                    <button onClick={() => handleverifySeller(seller)} className="btn btn-sm btn-primary">Verify</button>
+                  }
+                  </td>
               </tr>
             ))}
           </tbody>

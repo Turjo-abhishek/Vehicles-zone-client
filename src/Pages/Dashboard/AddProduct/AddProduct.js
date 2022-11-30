@@ -52,7 +52,8 @@ const AddProduct = () => {
                 category_id,
                 description,
                 image:imgdata.data.url,
-                status: "available"
+                status: "available",
+                time_posted: new Date().toLocaleDateString() 
               };
 
 
