@@ -35,3 +35,9 @@ Link: [https://vehicles-zone.web.app](https://vehicles-zone.web.app)
 * Tailwind Css
 * Axios
 * React Query
+
+
+## Admin Email and Password
+
+adminEmail: turjoabhishek@gmail.com
+adminPassword: 2020822020
