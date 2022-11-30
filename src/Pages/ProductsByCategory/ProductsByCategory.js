@@ -7,7 +7,7 @@ const ProductsByCategory = () => {
     return (
       <div className='grid grid-col-1 lg:grid-cols-3 gap-10 my-20'>
         {
-            products.map(product => <ProductCard key={product._id} product={product}></ProductCard>)
+            products?.map(product => <ProductCard key={product?._id} product={product}></ProductCard>)
         }
       </div>
     );

@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import Loader from "../../../Loader/Loader";
 
 const Allsellers = () => {
-  const { data: sellers = [], refetch } = useQuery({
+  const { data: sellers = [], refetch, isLoading } = useQuery({
     queryKey: ["allsellers"],
     queryFn: async () => {
       try {
@@ -54,6 +55,10 @@ const Allsellers = () => {
       });
   };
 
+  if(isLoading){
+    return <Loader></Loader>
+  }
+
   return (
     <div className="ml-7">
       <h2 className="text-2xl font-semibold mb-7 text-center">All Sellers</h2>
@@ -71,11 +76,11 @@ const Allsellers = () => {
           </thead>
           <tbody>
             {sellers.map((seller, i) => (
-              <tr key={seller._id}>
+              <tr key={seller?._id}>
                 <th>{i + 1}</th>
-                <td>{seller.name}</td>
-                <td>{seller.email}</td>
-                <td>{seller.role}</td>
+                <td>{seller?.name}</td>
+                <td>{seller?.email}</td>
+                <td>{seller?.role}</td>
                 <td>
                   <button
                     onClick={() => handleDeleteSeller(seller)}

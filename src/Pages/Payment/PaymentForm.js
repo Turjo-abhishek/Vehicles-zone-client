@@ -22,7 +22,7 @@ const PaymentForm = ({ order }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setClientSecret(data.clientSecret);
+        setClientSecret(data?.clientSecret);
       });
   }, [parsedPrice]);
 

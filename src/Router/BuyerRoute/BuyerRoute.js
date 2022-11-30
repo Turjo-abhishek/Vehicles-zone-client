@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
 import useBuyer from "../../Hooks/useBuyer";
+import Loader from "../../Loader/Loader";
 
 const BuyerRoute = ({ children }) => {
   const location = useLocation();
@@ -9,14 +10,7 @@ const BuyerRoute = ({ children }) => {
   const [isBuyer, isBuyerLoading] = useBuyer(user?.email);
   if (loading || isBuyerLoading) {
     return (
-      <div className="flex justify-center items-center">
-        <div
-          className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
-          role="status"
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
+      <Loader></Loader>
     );
   }
   if (user && isBuyer) {

@@ -2,10 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import { AuthContext } from "../../../Contexts/AuthProvider";
+import Loader from "../../../Loader/Loader";
 
 const MyProducts = () => {
   const { user } = useContext(AuthContext);
-  const { data: vehicles = [], refetch } = useQuery({
+  const { data: vehicles, isLoading, refetch } = useQuery({
     queryKey: ["vehicles"],
     queryFn: async () => {
       try {
@@ -21,18 +22,18 @@ const MyProducts = () => {
   const handleDeleteVehicle = (vehicle) => {
     fetch(`http://localhost:5000/vehicles/${vehicle?._id}`, {
       method: "DELETE",
-      // headers: {
-      //     authorization: `bearer ${localStorage.getItem("accessToken")}`
-      // }
+      headers: {
+          authorization: `bearer ${localStorage.getItem("accessToken")}`
+      }
     })
       .then((res) => res.json())
       .then((data) => {
         if (data?.deletedCount > 0) {
           fetch(`http://localhost:5000/advertises/${vehicle?._id}`, {
             method: "DELETE",
-            // headers: {
-            //     authorization: `bearer ${localStorage.getItem("accessToken")}`
-            // }
+            headers: {
+                authorization: `bearer ${localStorage.getItem("accessToken")}`
+            }
           })
             .then((res) => res.json())
             .then((data) => {});
@@ -50,6 +51,7 @@ const MyProducts = () => {
       }),
       headers: {
         "Content-type": "application/json",
+        authorization: `bearer ${localStorage.getItem("accessToken")}`
       },
     })
       .then((response) => response.json())
@@ -69,6 +71,7 @@ const MyProducts = () => {
             method: "POST",
             headers: {
               "content-type": "application/json",
+              authorization: `bearer ${localStorage.getItem("accessToken")}`
             },
             body: JSON.stringify(vehicleInfo),
           })
@@ -80,6 +83,10 @@ const MyProducts = () => {
         }
       });
   };
+
+  if(isLoading){
+    return <Loader></Loader>
+  }
 
   return (
     <div className="ml-7">
@@ -98,19 +105,19 @@ const MyProducts = () => {
             </tr>
           </thead>
           <tbody>
-            {vehicles.map((vehicle, i) => (
-              <tr key={vehicle._id}>
+            {vehicles?.map((vehicle, i) => (
+              <tr key={vehicle?._id}>
                 <th>{i + 1}</th>
                 <td>
                   <div className="avatar">
                     <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                      <img src={vehicle.image} alt="" />
+                      <img src={vehicle?.image} alt="" />
                     </div>
                   </div>
                 </td>
-                <td>{vehicle.name}</td>
-                <td>{vehicle.resale_price}</td>
-                <td>{vehicle.status}</td>
+                <td>{vehicle?.name}</td>
+                <td>{vehicle?.resale_price}</td>
+                <td>{vehicle?.status}</td>
                 <td>
                   <button
                     onClick={() => handleDeleteVehicle(vehicle)}
@@ -120,7 +127,7 @@ const MyProducts = () => {
                   </button>
                 </td>
                 <td>
-                  {!vehicle.advertised && (
+                  {!vehicle?.advertised && (
                     <button
                       onClick={() => handleAdvertise(vehicle)}
                       className="btn btn-sm btn-primary rounded-full"
@@ -129,7 +136,7 @@ const MyProducts = () => {
                       Advertise
                     </button>
                   )}
-                  {vehicle.advertised && (
+                  {vehicle?.advertised && (
                     <button className="btn btn-sm btn-success rounded-full">
                       {" "}
                       Advertised

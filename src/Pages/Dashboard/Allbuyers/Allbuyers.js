@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import Loader from "../../../Loader/Loader";
 
 const Allbuyers = () => {
-  const { data: buyers = [], refetch } = useQuery({
+  const { data: buyers = [], refetch, isLoading } = useQuery({
     queryKey: ["allbuyers"],
     queryFn: async () => {
       try {
@@ -14,7 +15,7 @@ const Allbuyers = () => {
   });
 
   const handleDeleteBuyer = (buyer) => {
-    fetch(`http://localhost:5000/allbuyers/${buyer._id}`,{
+    fetch(`http://localhost:5000/allbuyers/${buyer?._id}`,{
     method: 'DELETE'
     // headers: {
     //     authorization: `bearer ${localStorage.getItem("accessToken")}`
@@ -22,11 +23,14 @@ const Allbuyers = () => {
     })
     .then(res => res.json())
     .then(data => {
-        if(data.deletedCount > 0){
+        if(data?.deletedCount > 0){
             refetch();
-            toast.success(`${buyer.name} deleted successfully`)
+            toast.success(`${buyer?.name} deleted successfully`)
         }
     });
+  }
+  if(isLoading){
+    return <Loader></Loader>
   }
 
   return (
@@ -44,12 +48,12 @@ const Allbuyers = () => {
             </tr>
           </thead>
           <tbody>
-            {buyers.map((buyer, i) => (
-              <tr key={buyer._id}>
+            {buyers?.map((buyer, i) => (
+              <tr key={buyer?._id}>
                 <th>{i + 1}</th>
-                <td>{buyer.name}</td>
-                <td>{buyer.email}</td>
-                <td>{buyer.role}</td>
+                <td>{buyer?.name}</td>
+                <td>{buyer?.email}</td>
+                <td>{buyer?.role}</td>
                 <td><button onClick={() => handleDeleteBuyer(buyer)} className="btn btn-sm btn-error">Delete</button></td>
               </tr>
             ))}

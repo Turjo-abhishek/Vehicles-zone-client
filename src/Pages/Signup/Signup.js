@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { AuthContext } from "../../Contexts/AuthProvider";
 import useToken from "../../Hooks/useToken";
+import Loader from "../../Loader/Loader";
 
 const Signup = () => {
   const {
@@ -46,12 +47,13 @@ const Signup = () => {
     googleLogin()
       .then((result) => {
         const user = result.user;
+        setNewUserEmail(user?.email);
         const socialUserInfo = {
           name: user.displayName,
           email: user.email,
           role: "buyer",
         };
-        fetch("http://localhost:5000/users", {
+        fetch(`http://localhost:5000/socialLoginUsers?email=${user?.email}`, {
           method: "POST",
           headers: {
             "content-type": "application/json",
@@ -86,14 +88,7 @@ const Signup = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center">
-        <div
-          className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
-          role="status"
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
+      <Loader></Loader>
     );
   }
 

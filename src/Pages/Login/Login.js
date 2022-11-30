@@ -6,55 +6,77 @@ import { AuthContext } from "../../Contexts/AuthProvider";
 import useToken from "../../Hooks/useToken";
 
 const Login = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { Login, googleLogin } = useContext(AuthContext);
-    const [loginError, setLoginError] = useState("");
-    const [loginUser, setLoginUser] = useState('');
-    const [token] = useToken(loginUser);
-  
-    const from = location?.state?.from?.pathname || "/";
-  
-    if(token){
-      navigate(from, {replace: true});
-    }
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { Login, googleLogin, loading } = useContext(AuthContext);
+  const [loginError, setLoginError] = useState("");
+  const [loginUser, setLoginUser] = useState("");
+  const [token] = useToken(loginUser);
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-      } = useForm();
-      const handleLogin = (data) => {
-        setLoginError("");
-        Login(data.email, data.password)
-          .then((result) => {
-            const user = result.user;
-            setLoginUser(user.email);
-            
-          })
-          .catch((error) => {
-            setLoginError(error.message);
+  const from = location?.state?.from?.pathname || "/";
+
+  if (token) {
+    navigate(from, { replace: true });
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const handleLogin = (data) => {
+    setLoginError("");
+    Login(data.email, data.password)
+      .then((result) => {
+        const user = result.user;
+        setLoginUser(user.email);
+      })
+      .catch((error) => {
+        setLoginError(error.message);
+      });
+  };
+
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        setLoginUser(user?.email);
+        const socialUserInfo = {
+          name: user?.displayName,
+          email: user?.email,
+          role: "buyer",
+        };
+        fetch(`http://localhost:5000/socialLoginUsers?email=${user?.email}`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(socialUserInfo),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data?.acknowledged) {
+              setLoginUser(user?.email);
+            }
           });
-      };
+      })
+      .catch((error) => console.error(error));
+  };
 
-      const handleGoogleLogin = () => {
-        googleLogin()
-          .then((result) => {
-            const user = result.user;
-            console.log(user);
-          })
-          .catch((error) => console.error(error));
-      };
-
+  if (loading) {
+    return (
+      <div class="flex items-center justify-center mb-10">
+        <div class="w-24 h-24 border-l-2 border-gray-900 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <div className="w-full lg:w-1/3 mx-auto">
       <div className="hero-content gap-20  flex-col lg:flex-row py-20">
         <div className="card flex-shrink-0 w-full max-w-2xl shadow-2xl bg-base-100">
           <h1 className="text-4xl font-bold text-center pt-5">Login</h1>
-          <form
-            onSubmit={handleSubmit(handleLogin)}
-            className="card-body pb-4"
-          >
+          <form onSubmit={handleSubmit(handleLogin)} className="card-body pb-4">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -94,11 +116,7 @@ const Login = () => {
               )}
             </div>
             <div className="form-control mt-6">
-              <input
-                className="btn btn-primary"
-                type="submit"
-                value="Login"
-              />
+              <input className="btn btn-primary" type="submit" value="Login" />
               <p className="text-center mt-3">or,</p>
             </div>
             {loginError && <p className="text-red-500">{loginError}</p>}

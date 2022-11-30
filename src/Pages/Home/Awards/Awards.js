@@ -20,7 +20,7 @@ const Awards = () => {
           <div className="flex justify-center items-center flex-col">
             <TbSteeringWheel className="text-6xl text-orange-500"></TbSteeringWheel>
             <p className="text-xl font-bold mt-3">Available Brands</p>
-            <p className="font-bold my-3 text-4xl">20</p>
+            <p className="font-bold my-3 text-4xl">10</p>
           </div>
         </div>
         <div className="w-1/2">

@@ -245,7 +245,7 @@ const AddProduct = () => {
               <textarea
                 {...register("description")}
                 className="textarea textarea-primary"
-                placeholder="Describe Your product"
+                placeholder="Describe Your product with at least 200 words"
               ></textarea>
             </div>
             <div className="form-control w-full mt-2">
