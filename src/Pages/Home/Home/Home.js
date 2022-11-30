@@ -11,7 +11,7 @@ const Home = () => {
     queryKey: ["advertises"],
     queryFn: async () => {
       try {
-        const res = await fetch("http://localhost:5000/advertises", {
+        const res = await fetch("https://vehicles-zone-server.vercel.app/advertises", {
           headers: {
             authorization: `bearer ${localStorage.getItem("accessToken")}`
           }

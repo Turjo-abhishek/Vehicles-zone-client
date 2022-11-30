@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
   const [productInfo, setProductInfo] = useState(null);
 
   // useEffect( () => {
-  //   fetch(`http://localhost:5000/sellers/verified/${product?.seller_email}`)
+  //   fetch(`https://vehicles-zone-server.vercel.app/sellers/verified/${product?.seller_email}`)
   //   .then(res => res.json())
   //   .then(data => console.log(data));
   // },[product?.seller_email])

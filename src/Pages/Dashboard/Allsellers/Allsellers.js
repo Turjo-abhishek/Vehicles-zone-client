@@ -7,7 +7,7 @@ const Allsellers = () => {
     queryKey: ["allsellers"],
     queryFn: async () => {
       try {
-        const res = await fetch("http://localhost:5000/allsellers?role=seller");
+        const res = await fetch("https://vehicles-zone-server.vercel.app/allsellers?role=seller");
         const data = res.json();
         return data;
       } catch (error) {}
@@ -15,7 +15,7 @@ const Allsellers = () => {
   });
 
   const handleDeleteSeller = (seller) => {
-    fetch(`http://localhost:5000/allsellers/${seller?._id}`, {
+    fetch(`https://vehicles-zone-server.vercel.app/allsellers/${seller?._id}`, {
       method: "DELETE",
       // headers: {
       //     authorization: `bearer ${localStorage.getItem("accessToken")}`
@@ -31,7 +31,7 @@ const Allsellers = () => {
   };
 
   const handleverifySeller = (seller) => {
-    fetch(`http://localhost:5000/allsellers/${seller?._id}`, {
+    fetch(`https://vehicles-zone-server.vercel.app/allsellers/${seller?._id}`, {
       method: "PUT",
       // headers: {
       //     authorization: `bearer ${localStorage.getItem("accessToken")}`
@@ -40,7 +40,7 @@ const Allsellers = () => {
       .then((res) => res.json())
       .then((data) => {
         if(data?.modifiedCount> 0){
-          fetch(`http://localhost:5000/seller/verify/${seller?.email}`, {
+          fetch(`https://vehicles-zone-server.vercel.app/seller/verify/${seller?.email}`, {
             method: "PUT",
             // headers: {
             //     authorization: `bearer ${localStorage.getItem("accessToken")}`

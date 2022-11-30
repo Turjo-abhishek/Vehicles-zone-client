@@ -7,7 +7,7 @@ const Allbuyers = () => {
     queryKey: ["allbuyers"],
     queryFn: async () => {
       try {
-        const res = await fetch("http://localhost:5000/allbuyers?role=buyer");
+        const res = await fetch("https://vehicles-zone-server.vercel.app/allbuyers?role=buyer");
         const data = res.json();
         return data;
       } catch (error) {}
@@ -15,7 +15,7 @@ const Allbuyers = () => {
   });
 
   const handleDeleteBuyer = (buyer) => {
-    fetch(`http://localhost:5000/allbuyers/${buyer?._id}`,{
+    fetch(`https://vehicles-zone-server.vercel.app/allbuyers/${buyer?._id}`,{
     method: 'DELETE'
     // headers: {
     //     authorization: `bearer ${localStorage.getItem("accessToken")}`

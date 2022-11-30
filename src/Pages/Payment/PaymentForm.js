@@ -13,7 +13,7 @@ const PaymentForm = ({ order }) => {
   const parsedPrice = parseFloat(price);
 
   useEffect(() => {
-    fetch("http://localhost:5000/create-payment-intent", {
+    fetch("https://vehicles-zone-server.vercel.app/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const PaymentForm = ({ order }) => {
         price,
         product_id,
       };
-      fetch("http://localhost:5000/payments", {
+      fetch("https://vehicles-zone-server.vercel.app/payments", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -86,7 +86,7 @@ const PaymentForm = ({ order }) => {
         .then((data) => {
           setSuccess("Congratulations your payment completed");
           setTransactionId(paymentIntent.id);
-          fetch(`http://localhost:5000/products?productId=${product_id}`, {
+          fetch(`https://vehicles-zone-server.vercel.app/products?productId=${product_id}`, {
             method: "PATCH",
             body: JSON.stringify({
               status: "sold",

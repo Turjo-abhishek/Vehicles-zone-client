@@ -11,7 +11,7 @@ const MyProducts = () => {
     queryFn: async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/vehicles?email=${user?.email}`
+          `https://vehicles-zone-server.vercel.app/vehicles?email=${user?.email}`
         );
         const data = res.json();
         return data;
@@ -20,7 +20,7 @@ const MyProducts = () => {
   });
 
   const handleDeleteVehicle = (vehicle) => {
-    fetch(`http://localhost:5000/vehicles/${vehicle?._id}`, {
+    fetch(`https://vehicles-zone-server.vercel.app/vehicles/${vehicle?._id}`, {
       method: "DELETE",
       headers: {
           authorization: `bearer ${localStorage.getItem("accessToken")}`
@@ -29,7 +29,7 @@ const MyProducts = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data?.deletedCount > 0) {
-          fetch(`http://localhost:5000/advertises/${vehicle?._id}`, {
+          fetch(`https://vehicles-zone-server.vercel.app/advertises/${vehicle?._id}`, {
             method: "DELETE",
             headers: {
                 authorization: `bearer ${localStorage.getItem("accessToken")}`
@@ -44,7 +44,7 @@ const MyProducts = () => {
   };
 
   const handleAdvertise = (vehicle) => {
-    fetch(`http://localhost:5000/vehicles?vehicleId=${vehicle?._id}`, {
+    fetch(`https://vehicles-zone-server.vercel.app/vehicles?vehicleId=${vehicle?._id}`, {
       method: "PATCH",
       body: JSON.stringify({
         advertised: true,
@@ -67,7 +67,7 @@ const MyProducts = () => {
             vehicle_description: vehicle.description,
             vehicle_price: vehicle.resale_price,
           };
-          fetch("http://localhost:5000/advertises", {
+          fetch("https://vehicles-zone-server.vercel.app/advertises", {
             method: "POST",
             headers: {
               "content-type": "application/json",

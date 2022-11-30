@@ -53,7 +53,7 @@ const Signup = () => {
           email: user.email,
           role: "buyer",
         };
-        fetch(`http://localhost:5000/socialLoginUsers?email=${user?.email}`, {
+        fetch(`https://vehicles-zone-server.vercel.app/socialLoginUsers?email=${user?.email}`, {
           method: "POST",
           headers: {
             "content-type": "application/json",
@@ -72,7 +72,7 @@ const Signup = () => {
 
   const saveUserToDb = (name, email, role) => {
     const user = { name: name, email: email, role: role };
-    fetch("http://localhost:5000/users", {
+    fetch("https://vehicles-zone-server.vercel.app/users", {
       method: "POST",
       headers: {
         "content-type": "application/json",

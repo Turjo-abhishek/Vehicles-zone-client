@@ -47,7 +47,7 @@ const Login = () => {
           email: user?.email,
           role: "buyer",
         };
-        fetch(`http://localhost:5000/socialLoginUsers?email=${user?.email}`, {
+        fetch(`https://vehicles-zone-server.vercel.app/socialLoginUsers?email=${user?.email}`, {
           method: "POST",
           headers: {
             "content-type": "application/json",
