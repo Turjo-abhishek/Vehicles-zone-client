@@ -39,5 +39,5 @@ Link: [https://vehicles-zone.web.app](https://vehicles-zone.web.app)
 
 ## Admin Email and Password
 
-adminEmail: turjoabhishek@gmail.com
-adminPassword: 2020822020
+* adminEmail: turjoabhishek@gmail.com
+* adminPassword: 2020822020
