@@ -32,8 +32,8 @@ const ProductCard = ({ product }) => {
       <figure>
         <img
           src={image}
-          className="rounded-lg"
-          style={{ height: "250px" }}
+          className=" w-full p-4"
+          style={{ height: "250px", borderRadius: "30px" }}
           alt=""
         />
       </figure>

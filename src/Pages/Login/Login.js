@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { FaGoogle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
@@ -15,9 +17,9 @@ const Login = () => {
 
   const from = location?.state?.from?.pathname || "/";
 
-  if (token) {
-    navigate(from, { replace: true });
-  }
+  // if (token) {
+  //   navigate(from, { replace: true });
+  // }
 
   const {
     register,
@@ -30,6 +32,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         setLoginUser(user.email);
+        toast.success("Logged in successfully")
       })
       .catch((error) => {
         setLoginError(error.message);
@@ -41,6 +44,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
+        toast.success("Logged in successfully");
         setLoginUser(user?.email);
         const socialUserInfo = {
           name: user?.displayName,

@@ -52,7 +52,7 @@ const Routes = createBrowserRouter([
         children: [
             {
                 path: "/dashboard",
-                element: <h1 className="text-3xl font-bold mt-6 ml-10">Welcome to DashBoard</h1>
+                element: <h1 className="text-3xl font-bold mt-2 ml-10">Welcome to DashBoard</h1>
             },
             {
                 path: "/dashboard/addproduct",
