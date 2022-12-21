@@ -24,6 +24,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   const handleLogin = (data) => {
@@ -32,7 +33,8 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         setLoginUser(user.email);
-        toast.success("Logged in successfully")
+        toast.success("Logged in successfully");
+        reset();
       })
       .catch((error) => {
         setLoginError(error.message);

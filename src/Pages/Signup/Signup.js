@@ -12,6 +12,7 @@ const Signup = () => {
     handleSubmit,
     formState: { errors },
     register,
+    reset
   } = useForm();
   const [signUpError, setSignUpError] = useState("");
   const { createUser, googleLogin, loading, updateUser } =
@@ -37,6 +38,7 @@ const Signup = () => {
         updateUser(userInfo)
           .then(() => {
             saveUserToDb(data.name, data.email, data.role);
+            reset();
           })
           .catch((err) => console.error(err));
       })
