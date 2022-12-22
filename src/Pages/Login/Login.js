@@ -48,7 +48,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
-        toast.success("Logged in successfully");
+        toast.success("Logged in successfully with Google");
         setLoginUser(user?.email);
         const socialUserInfo = {
           name: user?.displayName,
@@ -69,7 +69,10 @@ const Login = () => {
             }
           });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        toast.error(error.message);
+      });
   };
 
   if (loading) {

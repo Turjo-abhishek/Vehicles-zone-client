@@ -69,7 +69,10 @@ const Signup = () => {
             }
           });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        toast.error(error.message);
+      });
   };
 
   const saveUserToDb = (name, email, role) => {
